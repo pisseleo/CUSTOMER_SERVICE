@@ -1,6 +1,8 @@
 import { ApiError } from './errors';
+import { mockListRequests } from './mockApi';
 
 const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? '/api';
+const USE_MOCK = import.meta.env.VITE_USE_MOCK_API === 'true';
 
 /**
  * Supplies the current OIDC access token for outgoing requests. Wired up
@@ -64,6 +66,9 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     });
   } catch (err) {
     if (err instanceof DOMException && err.name === 'AbortError') throw err;
+    if (USE_MOCK && method === 'GET' && path.replace(/^\//, '') === 'requests') {
+      return (await mockListRequests(query as any)) as unknown as T;
+    }
     throw ApiError.network();
   }
 

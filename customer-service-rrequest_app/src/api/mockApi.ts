@@ -1,4 +1,6 @@
 
+import YAML from 'yaml';
+import openApiSpecText from './frontend-challenge-api.openapi.yaml?raw';
 import type { CreateServiceRequest, ListServiceRequestsParams, ServiceRequest, ServiceRequestPage, UpdateRequestStatus } from '../types';
 import { ApiError } from './errors';
 
@@ -7,10 +9,24 @@ import { ApiError } from './errors';
 const STORAGE_KEY = 'csr_mock_requests_v1';
 const LATENCY_MS = 350;
 
+const openApiSpec = YAML.parse(openApiSpecText) as any;
+
+function loadOpenApiRequestExamples(): ServiceRequest[] | undefined {
+  const examples = openApiSpec?.paths?.['/requests']?.get?.responses?.['200']?.content?.['application/json']?.examples;
+  const populatedItems = examples?.populated?.value?.items;
+  if (!Array.isArray(populatedItems)) return undefined;
+  return populatedItems as ServiceRequest[];
+}
+
 const CATEGORIES = ['Billing', 'Technical', 'Account', 'Shipping', 'General'];
 const NAMES = ['Amara Diallo', 'Liang Wei', 'Sofia Almeida', 'Noah Fischer', 'Priya Nair', 'Tomás Silva', 'Yuki Tanaka'];
 
 function seed(): ServiceRequest[] {
+  const yamlItems = loadOpenApiRequestExamples();
+  if (yamlItems && yamlItems.length > 0) {
+    return yamlItems;
+  }
+
   const now = Date.now();
   const items: ServiceRequest[] = [];
   const statuses: ServiceRequest['status'][] = ['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'];

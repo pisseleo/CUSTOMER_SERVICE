@@ -34,7 +34,7 @@ export function NewRequestPage() {
     : undefined;
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto max-w-2xl bg-teal-200 rounded-2xl p-4 sm:p-6 shadow-2xl">
       <div className="mb-6">
         <h1 className="text-lg font-semibold text-ink-900">New service request</h1>
         <p className="text-sm text-ink-500">Submit a request on behalf of a customer.</p>
@@ -46,7 +46,7 @@ export function NewRequestPage() {
         </div>
       )}
 
-      <div className="rounded-lg border border-paper-200 bg-white p-5 sm:p-6">
+      <div className="rounded-lg border-amber-50 border-0 border-paper-200 bg-white p-5 sm:p-6">
         <RequestForm onSubmit={handleSubmit} submitting={mutation.isPending} serverFieldErrors={serverFieldErrors} />
       </div>
     </div>

@@ -13,9 +13,9 @@ function AppRoutes() {
   return (
         <Routes>
          
-          <Route path="/" element={<Navigate to="/customers" replace />} />
+          <Route path="/" element={<Navigate to="/list" replace />} />
           <Route
-            path="/customers"
+            path="/list"
             element={
              
                 <RequestsListPage />
@@ -23,7 +23,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="/customers/new"
+            path="/new"
             element={
              
                 <NewRequestPage />
@@ -31,7 +31,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="/customers/:requestId"
+            path="customers/:requestId"
             element={
              
                 <RequestDetailPage />

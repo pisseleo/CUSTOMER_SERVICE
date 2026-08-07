@@ -147,7 +147,7 @@ export function RequestForm({ onSubmit, submitting, serverFieldErrors }: Request
         <button
           type="submit"
           disabled={submitting}
-          className="flex items-center gap-2 rounded-md bg-desk-500 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-desk-600 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex items-center gap-2 rounded-md bg-teal-500 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-desk-600 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {submitting && (
             <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">

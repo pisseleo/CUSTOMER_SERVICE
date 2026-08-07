@@ -33,7 +33,7 @@ export function RequestsListPage() {
   const hasFilters = Boolean(search || status || priority);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 bg-teal-300 p-4 sm:p-6 rounded-lg border-amber-50 shadow-2xl">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold text-ink-900">Service requests</h1>

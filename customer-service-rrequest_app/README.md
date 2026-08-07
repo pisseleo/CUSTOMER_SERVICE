@@ -80,6 +80,13 @@ This repo contains a multi-stage `Dockerfile` and `nginx.conf` for building and 
 docker build -t customer-service-app .
 ```
 
+in case you're might be running in development mode just user
+
+```
+docker compose up
+```
+the command enables watching the processes on console
+
 ### Run container
 
 ```bash
@@ -116,9 +123,7 @@ Tailwind is enabled through `@tailwindcss/vite` in `vite.config.ts`.
 The entry CSS file is `src/index.css` and includes:
 
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@tailwind
 ```
 
 ## Scripts
