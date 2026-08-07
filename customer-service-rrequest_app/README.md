@@ -1,75 +1,140 @@
-# React + TypeScript + Vite
+# Customer Service Request App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript + Vite application for managing customer service requests. This repo includes Tailwind CSS integration, React Router, React Query, OIDC authentication, and a production-ready Docker/Nginx deployment flow.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19 + TypeScript + Vite
+- Tailwind CSS 4 via `@tailwindcss/vite`
+- React Router v7
+- React Query v5 for server state
+- OIDC authentication with `react-oidc-context`
+- API interaction via Axios
+- Docker + Nginx production deployment
 
-## React Compiler
+## Project structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `src/` — app source code
+- `src/pages/` — page-level screens
+- `src/components/` — reusable UI components
+- `src/api/` — API client, errors, and mock data
+- `src/hooks/` — React Query hooks
+- `src/auth/` — OIDC auth config
+- `src/types/` — shared TypeScript types
+- `Dockerfile` — production container build
+- `nginx.conf` — Nginx static server config
+- `vite.config.ts` — Vite build/dev server config
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js 22+ or compatible
+- npm
+- Docker (for container builds)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Install dependencies
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Start the Vite dev server:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run dev
 ```
+
+Open the app at `http://localhost:5173`.
+
+### Dev server proxy
+
+During development, the app proxies `/realms` requests to `http://localhost:8080`.
+This avoids CORS issues when your Keycloak/OpenID provider is running locally.
+
+## Build
+
+Compile the app for production:
+
+```bash
+npm run build
+```
+
+The production assets are generated in `dist/`.
+
+## Preview
+
+Serve the production build locally with Vite:
+
+```bash
+npm run preview
+```
+
+## Docker and Nginx
+
+This repo contains a multi-stage `Dockerfile` and `nginx.conf` for building and serving the app as a static site.
+
+### Docker build
+
+```bash
+docker build -t customer-service-app .
+```
+
+### Run container
+
+```bash
+docker run -p 80:80 customer-service-app
+```
+
+Then open `http://localhost`.
+
+### Nginx config
+
+`nginx.conf` is configured to:
+
+- listen on port `80`
+- serve static files from `/usr/share/nginx/html`
+- fallback unresolved routes to `index.html` for SPA routing
+
+```nginx
+server {
+    listen 80;
+    server_name localhost;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+
+## Tailwind CSS
+
+Tailwind is enabled through `@tailwindcss/vite` in `vite.config.ts`.
+The entry CSS file is `src/index.css` and includes:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+## Scripts
+
+- `npm run dev` — start Vite dev server
+- `npm run build` — build production assets
+- `npm run preview` — preview the production build
+- `npm run lint` — run ESLint
+
+## Troubleshooting
+
+- If Tailwind styles are missing, verify `src/index.css` contains the Tailwind directives and `@tailwindcss/vite` is enabled in `vite.config.ts`.
+- If you see CORS errors against `/realms`, ensure your auth server is reachable at `http://localhost:8080` or update the proxy target in `vite.config.ts`.
+- For production, adapt the Nginx config and auth settings to your deployed domain.
+
+## Notes
+
+- This app uses client-side routing, so Nginx must rewrite unknown paths to `index.html`.
+- The Dockerfile builds the app in Node and serves it with Nginx for a simple production deployment.
