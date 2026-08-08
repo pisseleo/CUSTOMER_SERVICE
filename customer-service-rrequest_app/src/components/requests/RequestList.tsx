@@ -25,7 +25,7 @@ export function RequestList({ items }: { items: ServiceRequest[] }) {
             {items.map((item) => (
               <tr key={item.id} className="group transition-colors hover:bg-paper-50">
                 <td className="max-w-xs px-4 py-3">
-                  <Link to={`/requests/${item.id}`} className="block">
+                  <Link to={`/customers/${item.id}`} className="block">
                     <p className="truncate font-medium text-ink-900 group-hover:text-desk-700">{item.title}</p>
                     <p className="ticket-id mt-0.5 text-xs text-ink-300">{item.id}</p>
                   </Link>

@@ -37,7 +37,7 @@ export function NewRequestPage() {
     <div className="mx-auto max-w-2xl bg-teal-200 rounded-2xl p-4 sm:p-6 shadow-2xl">
       <div className="mb-6">
         <h1 className="text-lg font-semibold text-ink-900">New service request</h1>
-        <p className="text-sm text-ink-500">Submit a request on behalf of a customer.</p>
+       
       </div>
 
       {generalError && (

@@ -11,22 +11,22 @@ export function Header() {
   const initials = getInitials(name);
 
   return (
-    <header className="sticky top-0 z-20 border-0 shadow-bottom border-paper-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-20 border-0 shadow border-paper-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-6">
-          <Link to="/list" className="flex rounded-md bg-blue-500 items-center gap-2">
+          <Link to="/list" className="flex rounded-md p-4 bg-blue-500 items-center gap-2">
             <span className="flex h-7 w-7 items-center justify-center rounded-md bg-desk-500 text-white">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" className="h-4 w-4">
                 <path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </span>
-            <span className="text-sm font-semibold tracking-tight text-ink-900">Service Desk</span>
+            <span className="text-sm font-semibold tracking-tight text-gray-100">Service Desk</span>
           </Link>
           <nav className="hidden items-center gap-1 sm:flex">
             <Link
               to="/list"
               className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-                location.pathname === '/' ? 'bg-desk-50 text-desk-700' : 'text-ink-500 hover:text-ink-900'
+                location.pathname === '/' ? 'bg-teal-50 text-teal-700' : 'text-ink-500 hover:text-ink-900'
               }`}
             >
               Requests
@@ -34,7 +34,7 @@ export function Header() {
             <Link
               to="/new"
               className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-                location.pathname === '/new' ? 'bg-desk-50 text-desk-700' : 'text-ink-500 hover:text-ink-900'
+                location.pathname === '/new' ? 'bg-teal-50 text-teal-700' : 'text-ink-500 hover:text-ink-900'
               }`}
             >
               New request
@@ -71,7 +71,7 @@ export function Header() {
         <Link
           to="/list"
           className={`rounded-md px-3 py-1.5 text-sm font-medium ${
-            location.pathname === '/' ? 'bg-desk-50 text-desk-700' : 'text-ink-500'
+            location.pathname === '/' ? 'bg-teal-50 text-teal-700' : 'text-ink-500'
           }`}
         >
           Requests
@@ -79,7 +79,7 @@ export function Header() {
         <Link
           to="/new"
           className={`rounded-md px-3 py-1.5 text-sm font-medium ${
-            location.pathname === '/new' ? 'bg-desk-50 text-desk-700' : 'text-ink-500'
+            location.pathname === '/new' ? 'bg-teal-50 text-teal-700' : 'text-ink-500'
           }`}
         >
           New request
