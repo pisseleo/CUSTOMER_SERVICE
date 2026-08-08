@@ -13,7 +13,7 @@ export function NewRequestPage() {
 
   function handleSubmit(input: CreateServiceRequest) {
     mutation.mutate(input, {
-      onSuccess: (created) => navigate(`/requests/${created.id}`, { replace: true }),
+      onSuccess: (created) => navigate(`/customers/${created.id}`, { replace: true }),
     });
   }
 
