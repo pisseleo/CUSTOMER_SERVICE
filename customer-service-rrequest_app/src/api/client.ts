@@ -65,8 +65,14 @@ function buildUrl(path: string, query?: Record<string, string | number | undefin
 }
 
 function isMockableRequest(path: string, method: string): boolean {
+  if (!USE_MOCK) return false;
+
   const cleanPath = path.replace(/^\//, '');
-  return USE_MOCK && (cleanPath === 'requests' || /^requests\//.test(cleanPath));
+  if (cleanPath === 'requests' && (method === 'GET' || method === 'POST')) return true;
+  if (/^requests\/[^/]+$/.test(cleanPath) && method === 'GET') return true;
+  if (/^requests\/[^/]+\/status$/.test(cleanPath) && method === 'PATCH') return true;
+
+  return false;
 }
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
