@@ -76,7 +76,7 @@ export function RequestsListPage() {
       />
 
       {isLoading ? (
-        <div className="flex items-center justify-center rounded-lg border border-paper-200 bg-white py-20">
+        <div className="flex items-center justify-center rounded-lg border-2 border-gray-200 bg-white py-20">
           <Spinner />
         </div>
       ) : isError ? (

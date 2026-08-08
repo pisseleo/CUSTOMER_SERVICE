@@ -27,7 +27,7 @@ export function useRequestQueryDetail(id: string | undefined) {
         queryKey: requestKeys.detail(id ?? ''),
         queryFn: ({ signal }) => getServiceRequest(id as string, signal),
         enabled: Boolean(id),
-        staleTime: 15_000, // 5 minutes
+        staleTime: 1000 * 60 * 5, // 5 minutes
     })
 }
 

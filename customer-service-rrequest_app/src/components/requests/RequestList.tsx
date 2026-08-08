@@ -10,7 +10,7 @@ export function RequestList({ items }: { items: ServiceRequest[] }) {
   return (
     <>
       {/* Desktop / tablet: table */}
-      <div className="hidden overflow-hidden rounded-lg border border-paper-200 bg-white sm:block">
+      <div className="hidden overflow-hidden rounded-lg border-2 border-gray-200 bg-white sm:block">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-paper-200 bg-paper-50 text-xs uppercase tracking-wide text-ink-500">

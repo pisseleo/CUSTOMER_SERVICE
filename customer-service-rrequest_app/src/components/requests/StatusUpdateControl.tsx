@@ -38,7 +38,7 @@ export function StatusUpdateControl({ currentStatus, onUpdate, submitting }: Sta
       <button
         onClick={() => selected && onUpdate(selected)}
         disabled={!selected || submitting}
-        className="flex items-center justify-center gap-2 rounded-md bg-desk-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-desk-600 disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex items-center justify-center gap-2 rounded-md bg-green-500 shadow-sm px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {submitting && <Spinner className="h-4 w-4 text-white" />}
         {submitting ? 'Updating…' : 'Update status'}

@@ -14,7 +14,7 @@ export function Header() {
     <header className="sticky top-0 z-20 border-0 shadow border-paper-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-6">
-          <Link to="/list" className="flex rounded-md p-4 bg-blue-500 items-center gap-2">
+          <Link to="/list" className="flex rounded-md p-2 bg-blue-500 items-center gap-2">
             <span className="flex h-7 w-7 items-center justify-center rounded-md bg-desk-500 text-white">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" className="h-4 w-4">
                 <path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

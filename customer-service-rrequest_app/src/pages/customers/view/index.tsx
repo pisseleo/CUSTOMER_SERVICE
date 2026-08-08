@@ -9,10 +9,10 @@ import { StatusUpdateControl } from '../../../components/requests/StatusUpdateCo
 import { PriorityBadge, StatusBadge } from '../../../components/ui/Badge/Badges';
 
 export function RequestDetailPage() {
-  const { id = '' } = useParams<{ id: string }>();
+  const { requestId = '' } = useParams<{ requestId: string }>();
   const navigate = useNavigate();
-  const { data: request, isLoading, isError, error, refetch } = useRequestQueryDetail(id);
-  const updateStatus = useUpdateRequestStatus(id);
+  const { data: request, isLoading, isError, error, refetch } = useRequestQueryDetail(requestId);
+  const updateStatus = useUpdateRequestStatus(requestId);
 
   function handleUpdate(next: RequestStatus) {
     if (!request) return;
