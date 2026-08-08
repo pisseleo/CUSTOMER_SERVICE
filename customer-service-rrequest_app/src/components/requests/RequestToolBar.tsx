@@ -37,7 +37,7 @@ export function RequestsToolbar({
   }, [draft]);
 
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-paper-200 bg-white p-3 sm:flex-row sm:items-center sm:p-3.5">
+    <div className="flex flex-col gap-4 rounded-lg border border-paper-200 bg-white p-3 sm:flex-row sm:items-center sm:p-3.5">
       <div className="relative flex-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@ export function RequestsToolbar({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
+      <div className="grid grid-cols-2 gap-3 sm:flex sm:items-center">
         <select
           value={status}
           onChange={(e) => onStatusChange(e.target.value as RequestStatus | '')}

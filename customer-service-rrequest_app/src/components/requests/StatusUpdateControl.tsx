@@ -20,7 +20,7 @@ export function StatusUpdateControl({ currentStatus, onUpdate, submitting }: Sta
   }
 
   return (
-    <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
       <select
         value={selected}
         onChange={(e) => setSelected(e.target.value as RequestStatus | '')}

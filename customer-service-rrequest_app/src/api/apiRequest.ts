@@ -1,4 +1,3 @@
-import axios, { type AxiosError, type AxiosRequestConfig } from 'axios'
 import type {
   CreateServiceRequest,
   ListServiceRequestsParams,
@@ -7,12 +6,7 @@ import type {
   ServiceRequestPage,
   UpdateRequestStatus,
 } from '../types'
-import { mockListRequests } from './mockApi';
-import { apiRequest } from './client';
-
-
-const USE_MOCK = import.meta.env.VITE_USE_MOCK_API === 'true';
-
+import { apiRequest } from './client'
 
 export class ApiError extends Error {
   status: number
@@ -26,70 +20,34 @@ export class ApiError extends Error {
   }
 }
 
-const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ?? '/api',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
-
-function isAxiosError(error: unknown): error is AxiosError {
-  return axios.isAxiosError(error)
-}
-
-function buildProblemDetails(data: unknown): ProblemDetails | undefined {
-  if (data && typeof data === 'object' && 'title' in data) {
-    return data as ProblemDetails
-  }
-
-  return undefined
-}
-
 function buildApiError(error: unknown): ApiError {
   if (error instanceof ApiError) {
     return error
   }
 
-  if (isAxiosError(error)) {
-    const status = error.response?.status ?? 500
-    const problemDetails = buildProblemDetails(error.response?.data)
-    const message = problemDetails?.detail ?? error.message ?? 'An unexpected error'
-
-    return new ApiError(message, status, problemDetails)
+  if (error instanceof Error) {
+    return new ApiError(error.message, 500)
   }
 
   return new ApiError('An unexpected error', 500)
 }
 
-// function delay(ms: number) {
-//   return new Promise<void>((resolve) => {
-//     window.setTimeout(resolve, ms)
-//   })
-// }
-
-async function request<T>(config: AxiosRequestConfig): Promise<T> {
+async function request<T>(config: {
+  method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE'
+  url: string
+  data?: unknown
+  params?: Record<string, string | number | undefined>
+  signal?: AbortSignal
+}): Promise<T> {
   try {
-    const response = await apiClient.request<T>({
-      ...config,
-      validateStatus: () => true,
+    return await apiRequest<T>(config.url, {
+      method: config.method?.toUpperCase() as 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE',
+      body: config.data,
+      query: config.params,
+      signal: config.signal,
     })
-
-    if (response.status >= 200 && response.status < 300) {
-      return response.data
-    }
-
-    const problemDetails = buildProblemDetails(response.data)
-    throw new ApiError(problemDetails?.detail ?? 'Request failed', response.status, problemDetails)
   } catch (error) {
-    const apiError = buildApiError(error)
-    if (USE_MOCK) {
-      // provide mock for listing requests endpoint
-      if (config.method?.toUpperCase() === 'GET' && config.url === '/requests') {
-        // config.params may be undefined or match ListServiceRequestsParams
-        return (await mockListRequests(config.params as ListServiceRequestsParams)) as unknown as T
-      }
-    }
-    throw apiError
+    throw buildApiError(error)
   }
 }
 

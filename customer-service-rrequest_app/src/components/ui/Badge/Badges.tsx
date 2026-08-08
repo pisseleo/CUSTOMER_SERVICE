@@ -3,10 +3,10 @@ import { PRIORITY_LABELS, STATUS_LABELS } from "../../../types/uiTypes";
 
 
 const STATUS_STYLES: Record<RequestStatus, string> = {
-  OPEN: 'bg-desk-100 text-desk-700 ring-desk-200',
-  IN_PROGRESS: 'bg-signal-100 text-signal-600 ring-signal-400/30',
-  RESOLVED: 'bg-success-100 text-success-600 ring-success-500/20',
-  CLOSED: 'bg-paper-100 text-ink-500 ring-paper-200',
+  OPEN: 'bg-cyan-100 text-cyan-700 ring-cyan-200',
+  IN_PROGRESS: 'bg-blue-100 text-blue-600 ring-blue-400/30',
+  RESOLVED: 'bg-success-100 text-green-600 ring-success-500/20',
+  CLOSED: 'bg-gray-100 text-gray-500 ring-gray-200',
 };
 
 export function StatusBadge({ status }: { status: RequestStatus }) {
@@ -21,11 +21,11 @@ export function StatusBadge({ status }: { status: RequestStatus }) {
 }
 
 const PRIORITY_STYLES: Record<ServiceRequestPriority, string> = {
-  LOW: 'text-ink-500',
-  MEDIUM: 'text-desk-500',
-  HIGH: 'text-signal-600',
-  CRITICAL: 'text-danger-600',
-  URGENT: 'text-urgent-600',
+  LOW: 'text-cyan-500',
+  MEDIUM: 'text-orange-500',
+  HIGH: 'text-red-600',
+  CRITICAL: 'text-amber-6900',
+  URGENT: 'text-red-800',
 };
 
 const PRIORITY_DOT: Record<ServiceRequestPriority, number> = {

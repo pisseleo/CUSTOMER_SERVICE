@@ -2,6 +2,8 @@
 
 A React + TypeScript + Vite application for managing customer service requests. This repo includes Tailwind CSS integration, React Router, React Query, OIDC authentication, and a production-ready Docker/Nginx deployment flow.
 
+The application that consumes the Customer Service API and authenticates users through an external **OpenID Connect (OIDC)** provider using **Keycloak**.
+
 ## Features
 
 - React 19 + TypeScript + Vite
@@ -18,12 +20,19 @@ A React + TypeScript + Vite application for managing customer service requests. 
 - `src/pages/` — page-level screens
 - `src/components/` — reusable UI components
 - `src/api/` — API client, errors, and mock data
+    src/api/
+    ├── frontend-challenge-api.openapi.yaml
+    ├── mockApi.ts
+    ├── client.ts
+    └── apiRequest.ts
 - `src/hooks/` — React Query hooks
 - `src/auth/` — OIDC auth config
 - `src/types/` — shared TypeScript types
 - `Dockerfile` — production container build
 - `nginx.conf` — Nginx static server config
 - `vite.config.ts` — Vite build/dev server config
+
+then configure the .env with variables based on .env.example structure
 
 ## Prerequisites
 
@@ -78,6 +87,10 @@ This repo contains a multi-stage `Dockerfile` and `nginx.conf` for building and 
 
 ```bash
 docker build -t customer-service-app .
+```
+or you can use this command bellow
+```bash
+docker compose up -d --build
 ```
 
 in case you're might be running in development mode just user

@@ -57,7 +57,7 @@ export function RequestForm({ onSubmit, submitting, serverFieldErrors }: Request
     (touched[field] && errors[field]) || serverFieldErrors?.[field];
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
       <Field label="Title" error={fieldError('title')} htmlFor="title">
         <input
           id="title"
@@ -143,7 +143,7 @@ export function RequestForm({ onSubmit, submitting, serverFieldErrors }: Request
         </Field>
       </div>
 
-      <div className="mt-2 flex items-center gap-3">
+      <div className="mt-4 flex items-center gap-4">
         <button
           type="submit"
           disabled={submitting}
@@ -174,7 +174,7 @@ function Field({
   children: ReactNode;
 }) {
   return (
-    <div>
+    <div className="space-y-2">
       <label htmlFor={htmlFor} className="mb-1.5 block text-sm font-medium text-ink-900">
         {label}
       </label>

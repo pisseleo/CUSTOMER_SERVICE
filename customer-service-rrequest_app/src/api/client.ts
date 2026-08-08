@@ -1,8 +1,27 @@
 import { ApiError } from './errors';
-import { mockListRequests } from './mockApi';
+import { mockCreateRequest, mockGetRequest, mockListRequests, mockUpdateStatus } from './mockApi';
+import type {
+  CreateServiceRequest,
+  ListServiceRequestsParams,
+  RequestPriority,
+  RequestStatus,
+  UpdateRequestStatus,
+} from '../types';
 
 const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? '/api';
 const USE_MOCK = import.meta.env.VITE_USE_MOCK_API === 'true';
+
+function buildMockListParams(query?: Record<string, string | number | undefined>): ListServiceRequestsParams {
+  return {
+    search: typeof query?.search === 'string' ? query.search : undefined,
+    status: typeof query?.status === 'string' ? (query.status as RequestStatus) : undefined,
+    priority: typeof query?.priority === 'string' ? (query.priority as RequestPriority) : undefined,
+    sortBy: 'createdAt',
+    sortDir: query?.sortDir === 'asc' ? 'asc' : 'desc',
+    page: typeof query?.page === 'number' ? query.page : query?.page ? Number(query.page) : undefined,
+    pageSize: typeof query?.pageSize === 'number' ? query.pageSize : query?.pageSize ? Number(query.pageSize) : undefined,
+  };
+}
 
 /**
  * Supplies the current OIDC access token for outgoing requests. Wired up
@@ -45,6 +64,11 @@ function buildUrl(path: string, query?: Record<string, string | number | undefin
   return `${base}/${cleanPath}${queryString ? `?${queryString}` : ''}`;
 }
 
+function isMockableRequest(path: string, method: string): boolean {
+  const cleanPath = path.replace(/^\//, '');
+  return USE_MOCK && (cleanPath === 'requests' || /^requests\//.test(cleanPath));
+}
+
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { method = 'GET', body, query, signal } = options;
 
@@ -66,8 +90,8 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     });
   } catch (err) {
     if (err instanceof DOMException && err.name === 'AbortError') throw err;
-    if (USE_MOCK && method === 'GET' && path.replace(/^\//, '') === 'requests') {
-      return (await mockListRequests(query as any)) as unknown as T;
+    if (isMockableRequest(path, method)) {
+      return handleMockRequest<T>(path, method, body, query);
     }
     throw ApiError.network();
   }
@@ -75,13 +99,45 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   if (response.status === 204) return undefined as T;
 
   const contentType = response.headers.get('content-type') ?? '';
-  const payload = contentType.includes('application/json') ? await response.json().catch(() => undefined) : undefined;
+  const jsonResponse = contentType.includes('application/json');
+  const payload = jsonResponse ? await response.json().catch(() => undefined) : undefined;
 
   if (!response.ok) {
+    if (isMockableRequest(path, method)) {
+      return handleMockRequest<T>(path, method, body, query);
+    }
     const error = ApiError.fromStatus(response.status, payload);
     if (error.kind === 'auth' && response.status === 401) onUnauthorized();
     throw error;
   }
 
+  if (payload === undefined && isMockableRequest(path, method)) {
+    return handleMockRequest<T>(path, method, body, query);
+  }
+
   return payload as T;
+}
+
+function handleMockRequest<T>(path: string, method: string, body: unknown, query?: Record<string, string | number | undefined>): T {
+  const cleanPath = path.replace(/^\//, '');
+
+  if (method === 'GET' && cleanPath === 'requests') {
+    return mockListRequests(buildMockListParams(query)) as unknown as T;
+  }
+
+  if (method === 'GET' && /^requests\/.+/.test(cleanPath)) {
+    const id = cleanPath.split('/')[1];
+    return mockGetRequest(id) as unknown as T;
+  }
+
+  if (method === 'POST' && cleanPath === 'requests') {
+    return mockCreateRequest(body as CreateServiceRequest) as unknown as T;
+  }
+
+  if (method === 'PATCH' && /^requests\/.+\/status$/.test(cleanPath)) {
+    const [, id] = cleanPath.split('/');
+    return mockUpdateStatus(id, body as UpdateRequestStatus) as unknown as T;
+  }
+
+  throw ApiError.network();
 }

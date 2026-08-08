@@ -19,7 +19,7 @@ function loadOpenApiRequestExamples(): ServiceRequest[] | undefined {
 }
 
 const CATEGORIES = ['Billing', 'Technical', 'Account', 'Shipping', 'General'];
-const NAMES = ['Amara Diallo', 'Liang Wei', 'Sofia Almeida', 'Noah Fischer', 'Priya Nair', 'Tomás Silva', 'Yuki Tanaka'];
+const NAMES = ['Hilario Amamo', 'Leonel Chihale', 'Lura Tembe', 'Suale Abdul', 'Arneu Nhadumbuque', 'Tomás Mathe', 'Yury da Conceicao'];
 
 function seed(): ServiceRequest[] {
   const yamlItems = loadOpenApiRequestExamples();
